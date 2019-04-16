@@ -23,15 +23,15 @@ def yeet():
     r = requests.post('http://lab3-oauth-provider/token.php', data=d, auth=auth)
     if r.status_code == 400:
         return jsonify(auth='fail', token='')
-    print(r.text)
     res = r.json()
-    print(res)
     if 'access_token' in res:
         m = hashlib.sha256()
         m.update(bytes(password, 'utf-8'))
         k = m.digest()
-        res = secretEncrypt(r.text, k)
-        return jsonify(res=res)
+        token = secretEncrypt(r.text, b'YEET')
+        newRes = json.dumps({ 'auth': 'success', 'token': token})
+        newRes = secretEncrypt(newRes, k)
+        return jsonify(res=newRes)
     else:
         return 'segfault'
 

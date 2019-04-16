@@ -20,21 +20,18 @@ def yeet():
     password = request.form['password']
     d = { 'username': username, 'password': password }
     r = requests.post('http://lab3-auth-server/yeet', data=d)
-    print(r.text) 
     res = r.json()
 
     if 'auth' in res and res['auth'] == 'fail':
         return 'Your creds sucks'
     elif 'res' in res:
-        print(type(res['res']))
         m = hashlib.sha256()
         m.update(bytes(password, 'utf-8'))
         k = m.digest()
-        print(type(k))
-        if type(res['res']) != str or type(k) != bytes:
-            return 'not yeeted'
-        res = secretDecrypt(res['res'], k)
-        return 'You are yeeted ' + res
+        res = json.loads(secretDecrypt(res['res'], k))
+        token = res['token']
+        r = requests.post('http://lab3-app-server/yeet', json={ 'token': token })
+        return r.text
     else:
         return 'segfault'
     
