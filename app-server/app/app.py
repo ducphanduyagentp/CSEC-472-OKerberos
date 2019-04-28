@@ -1,5 +1,6 @@
 from flask import *
 import json
+import sys
 
 app = Flask(__name__)
 
@@ -15,11 +16,12 @@ def index():
 @app.route('/yeet', methods=["POST"])
 def yeet():
     token = request.get_json()
+    sys.stderr.write("Request from client: " + str(token) + '\n')
     if 'token' in token:
         token = token['token']
         token = secretDecrypt(token, b'YEET')
         token = json.loads(token)
-        print(token)
+        sys.stderr.write("Decrypted request from client: " + str(token) + '\n')
         if 'access_token' in token:
             return 'you are granted the yeet power'
         else:

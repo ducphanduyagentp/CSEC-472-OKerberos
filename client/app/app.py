@@ -2,6 +2,7 @@ from flask import *
 import requests
 import json
 import hashlib
+import sys
 
 app = Flask(__name__)
 
@@ -21,7 +22,7 @@ def yeet():
     d = { 'username': username, 'password': password }
     r = requests.post('http://lab3-auth-server/yeet', data=d)
     res = r.json()
-
+    sys.stderr.write("Response from auth server: " + str(res) + '\n')
     if 'auth' in res and res['auth'] == 'fail':
         return 'Your creds sucks'
     elif 'res' in res:
@@ -29,6 +30,7 @@ def yeet():
         m.update(bytes(password, 'utf-8'))
         k = m.digest()
         res = json.loads(secretDecrypt(res['res'], k))
+        sys.stderr.write("Decrypted response from auth server: " + str(res) + '\n')
         token = res['token']
         r = requests.post('http://lab3-app-server/yeet', json={ 'token': token })
         return r.text

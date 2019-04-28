@@ -2,6 +2,7 @@ from flask import *
 import requests
 import json
 import hashlib
+import sys
 
 app = Flask(__name__)
 
@@ -21,9 +22,10 @@ def yeet():
     auth = requests.auth.HTTPBasicAuth(username, password)
     d = { 'grant_type' : 'client_credentials' }
     r = requests.post('http://lab3-oauth-provider/token.php', data=d, auth=auth)
+    res = r.json()
+    sys.stderr.write("Response from oauth provider: " + str(res) + '\n')
     if r.status_code == 400:
         return jsonify(auth='fail', token='')
-    res = r.json()
     if 'access_token' in res:
         m = hashlib.sha256()
         m.update(bytes(password, 'utf-8'))
