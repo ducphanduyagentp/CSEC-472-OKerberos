@@ -1,3 +1,5 @@
-# CSEC-472 OKerberos
+# BRUH-472
 
-Do this do that authenticate this authenticate that.
+Seriously kiddos? Y'all using this to easy pass this class? Couldn't do a simple exercise like this?
+
+Whoa. Y'all are the greatest disappointment of the RIT CSEC department ngl :D Go find something better to do rather than ruining your own life with something you aren't qualified to do later in life, kiddos. 
